@@ -1,4 +1,3 @@
-import os
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from datetime import datetime
@@ -59,11 +58,11 @@ def create_table():
 
 def load_csv_to_postgres():
     conn = psycopg2.connect(
-        host=os.getenv("PG_HOST"),
-        port=os.getenv("PG_PORT"),
-        database=os.getenv("PG_DB"),
-        user=os.getenv("PG_USER"),
-        password=os.getenv("PG_PASSWORD")
+        host="postgres",
+        port=5432,
+        database="airflow",
+        user="airflow",
+        password="airflow"
     )
 
     cur = conn.cursor()
