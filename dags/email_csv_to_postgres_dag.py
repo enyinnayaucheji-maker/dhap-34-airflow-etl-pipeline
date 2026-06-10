@@ -30,7 +30,9 @@ def validate_csv_schema():
         actual_columns = reader.fieldnames
 
     if actual_columns != expected_columns:
-        raise ValueError(f"Schema mismatch. Expected {expected_columns}, got {actual_columns}")
+        raise ValueError(
+            f"Schema mismatch. Expected {expected_columns}, got {actual_columns}"
+        )
 
     print("CSV schema validation passed.")
 
@@ -42,7 +44,7 @@ def create_table():
     conn = psycopg2.connect(
         host="postgres",
         port=5432,
-        database="airflow",
+        database="email_support_db",
         user="airflow",
         password="airflow"
     )
@@ -53,14 +55,14 @@ def create_table():
     cur.close()
     conn.close()
 
-    print("Table created successfully.")
+    print("Table created successfully in email_support_db.")
 
 
 def load_csv_to_postgres():
     conn = psycopg2.connect(
         host="postgres",
         port=5432,
-        database="airflow",
+        database="email_support_db",
         user="airflow",
         password="airflow"
     )
@@ -105,7 +107,7 @@ def load_csv_to_postgres():
     cur.close()
     conn.close()
 
-    print(f"Loaded {len(rows)} rows into PostgreSQL.")
+    print(f"Loaded {len(rows)} rows into email_support_db.")
 
 
 with DAG(
@@ -126,8 +128,8 @@ with DAG(
     )
 
     task_create_table = PythonOperator(
-        task_id="create_table"
-    ,   python_callable=create_table
+        task_id="create_table",
+        python_callable=create_table
     )
 
     task_load_csv = PythonOperator(
